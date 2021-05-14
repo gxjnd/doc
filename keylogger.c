@@ -42,6 +42,7 @@ int main ( void )
 							
 					}
 				}
+			Sleep(200);
 		
 			
                
