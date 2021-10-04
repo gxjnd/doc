@@ -1,0 +1,117 @@
+
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+ 
+
+</head>
+<body>
+
+<textarea  rows="10" cols="30" wrap="off" style="overflow:scroll;" class="textarea_txt" name="raw_txt" id = "raw" onchange="hit()"></textarea>
+<style type="text/css">
+.slide-two{
+
+background-color: white;
+border: 1px solid #DCDCDC;
+
+font-size: 25px;
+color:black;
+outline: none;
+}
+.ta2{
+
+
+margin-right: 55px;
+border: 0px solid #DCDCDC;
+
+}
+.div_p{
+margin-top: 5.5px;
+}
+
+.p_size{
+font-size: 25px;
+  
+}
+.textarea_txt{
+font-size: 20px;
+  
+}
+
+
+		</style>
+
+
+
+
+<div class= "div_p" >
+  
+<span class="ta2">
+  
+    <button type="button" id="submit" class="slide-two"  onclick="hit()">translate</button>
+   
+</span>
+<span class="ta2">
+    <button type="button" id="clear" class="slide-two"  onclick="cls()">clear</button>
+</span>
+
+  
+</div>
+
+
+
+
+<br/>
+<!--...
+
+
+<textarea  rows="10" cols="30" wrap="off" style="overflow:scroll;" id = "raw2"></textarea>
+-->
+<p id ="doc" class= "p_size"></p>
+
+<br/>
+
+
+  
+  <script>
+ //   var con= document.getElementById('raw').value();
+ 
+ 
+
+
+    
+    
+function cls(){
+//alert("clear");
+	  document.getElementById('raw').value="";
+	  document.getElementById('doc').innerHTML="";
+
+		  
+		}
+		function hit(){
+var c = document.getElementById("raw").value
+//	alert(c)
+	var newstr = c.replace(/\n/g, ' ');
+  
+	  document.getElementById('doc').innerHTML=newstr;
+
+		  
+		}//为submit绑定点击事件，将name的值在也页面弹窗显示
+
+
+
+  </script>
+
+  
+  
+
+</body>
+
+</html>
+
+
+
+
