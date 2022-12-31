@@ -360,7 +360,17 @@ newstr = replace_pos(newstr,less_num[i]+1,'<br /><br />');
   function cpy() {
         var Url2=document.getElementById('doc').innerText;
         
-        if(!(isChinese(Url2[0]))){
+        var really_chiness = 0;
+        
+        for (var k = 0 ; k < 20; k++) {
+            if(isChinese(Url2[k])){
+              really_chiness = 1;
+              break;
+            }
+          }
+
+        if(!really_chiness){
+          
         doc_reslut = document.getElementById("doc");
         doc_reslut.style.animation="blinkingText 0.3s 20 forwards";
       //  doc_reslut.style.animation-fill-mode="forwards";
