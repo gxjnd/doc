@@ -1,14 +1,19 @@
-
+ 
+ 
 <html>
 <head>
 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
- 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 
 </head>
 <body>
+
+
 
 <textarea  rows="10" cols="30" wrap="off" style="overflow:scroll;" class="textarea_txt" name="raw_txt" id = "raw" onchange="hit()"></textarea>
 <style type="text/css">
@@ -40,7 +45,40 @@ font-size: 25px;
 font-size: 20px;
   
 }
+.wait{
+  font-size: 15px;
+  color: red;
+  text-align: center;
+}
 
+
+#cp{
+    animation:blinkingText 0.3s 0;
+}
+@keyframes blinkingText{
+    0%{     color: #000;    }
+    49%{    color: #000; }
+    49%{    color: transparent; }
+    60%{    color: transparent; }
+      100%{    color: #000; }
+    
+}
+@keyframes blinkingText_2{
+    0%{     color: #00FF00;    }
+    49%{    color: #00FF00; }
+    49%{    color: transparent; }
+    60%{    color: transparent; }
+      100%{    color: #000; }
+    
+}
+
+
+#doc{
+  color: #000;
+}
+ .endsigns{
+   color: "green";
+ }
 
 		</style>
 
@@ -60,47 +98,314 @@ font-size: 20px;
 
   
 </div>
+<div class= "div_p" >
+
+
+</div>
+    <button type="button" id="cp" class="slide-two copys"  onclick="cpy2()">copy</button>
 
 
 
 
 <br/>
-<!--...
+<div class="alert alert-success" id="success-alert">
 
+  
+  <p class="wait">请等一下! </p>
+  
+</div>
+
+
+
+<!--
 
 <textarea  rows="10" cols="30" wrap="off" style="overflow:scroll;" id = "raw2"></textarea>
 -->
-<p id ="doc" class= "p_size"></p>
+
+<p id ="doc" class= "p_size" onclick="cpy()"></p>
 
 <br/>
 
 
-  
+
+
   <script>
  //   var con= document.getElementById('raw').value();
  
  
+      $(document).ready(function() {
+  $("#success-alert").hide();
+  
+});
+
+      function showAlert() {
+    $("#success-alert").fadeTo(100, 1).slideUp(1000 );
+  }
 
 
-    
+
+function addcss(styles){
+// Your CSS as text
+
+
+var styleSheet = document.createElement("style")
+styleSheet.innerText = styles
+document.head.appendChild(styleSheet)
+  
+  
+}
     
 function cls(){
 //alert("clear");
-	  document.getElementById('raw').value="";
+	  document.getElementById('raw').value="\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 	  document.getElementById('doc').innerHTML="";
 
 		  
 		}
-		function hit(){
+		
+function nthIndex(str, pat, n){
+    var L= str.length, i= -1;
+    while(n-- && i++<L){
+        i= str.indexOf(pat, i);
+        if (i < 0) break;
+    }
+    return i;
+}
+
+function countString(str, letter) {
+    let count = 0;
+
+    // looping through the items
+    for (let i = 0; i < str.length; i++) {
+
+        // check if the character is at that position
+        if (str.charAt(i) == letter) {
+            count += 1;
+        }
+    }
+    return count;
+}
+
+
+
+
+function replace_pos(myString,pos,character){
+myString = myString.substring(0,pos) + 
+           character + 
+           myString.substring(pos, myString.length);
+return myString;
+  
+}
+
+function get_pat_pos(newstr){
+  
+var count_pat = countString(newstr,'.');
+var list_pos = [];
+var cmp_num = [];
+var len_str = newstr.length
+
+var t_split = Math.floor(newstr.length/800);
+
+//alert (t_split);
+
+for (var j =1  ; j <t_split+1; j++) {
+  cmp_num.push(800*j);
+  
+}
+
+
+
+for (var k =cmp_num.length-1  ; k >-1; k--) {
+ // console.log("k : ",cmp_num[k],k )
+for (var i = count_pat ; i >0; i--) {
+var get_sign  = nthIndex(newstr,'.',i);
+if (get_sign<cmp_num[k]){
+    list_pos.push(get_sign);
+    break;
+  }
+  
+  
+}
+}
+
+
+return list_pos;
+}
+
+
+async function get_clipboard (){
+//console.log("enter clipboard");
+//const data = await navigator.clipboard.read();
+const text =  await navigator.clipboard.readText();
+  if(text == ''){
+    console.log("enter clipboard 1");
+    setTimeout(get_clipboard,1000);
+  }
+   
+//console.log(text);
+//alert(text);
+document.getElementById("raw").value = text;
+hit();
+  
+}
+
+function hit(){
 var c = document.getElementById("raw").value
 //	alert(c)
 	var newstr = c.replace(/\n/g, ' ');
+	 newstr = newstr.replace(/</g, '&lt;');
+  //在此处，正则表达式的末尾有个g，它表示match源字符串str中所有匹配项。
+//这里如果没有g，那么也只能匹配到第一个错别字”背景“，只有加了这个g，才能匹配到所有的”背景“。
+	newstr= newstr.trimEnd();
+	
+//	var end_sign = "<font color=#00FF00>##@</font>";
+	var end_sign = "#####";
+//	var end_sign = "##@";
+//  var newstr= newstr + end_sign;
   
-	  document.getElementById('doc').innerHTML=newstr;
+
+newstr_len = newstr.length
+ // console.log("string len : ",newstr_len)
+  
+  
+//var count_pat = countString(newstr,'.');
+//var get_sign  = nthIndex(newstr,'.',count_pat);
+if (newstr_len>700){
+var less_num = get_pat_pos(newstr);
+//alert("list : "+less_num);
+for (var i = 0 ; i < less_num.length; i++) {
+newstr = replace_pos(newstr,less_num[i]+1,'<br /><br />');
+}
+
+}
+//console.log(less_num);
+
+
+//substring
+	  document.getElementById('doc').innerHTML=newstr+end_sign;
+/*if (navigator.clipboard) {
+
+  console.log('Clipboard API available');
+  get_clipboard();
+
+}
+*/
+     setTimeout(cpy,1000);
 
 		  
-		}//为submit绑定点击事件，将name的值在也页面弹窗显示
+		}
+		
+  function isChinese(temp) 
+  { 
+  var re=/[^\u4e00-\u9fa5]/; 
+  if(re.test(temp)) return false; 
+  return true; 
+  } 
+  
 
+
+		//为submit绑定点击事件，将name的值在也页面弹窗显示
+  function cpy2() {
+        var Url2=document.getElementById('doc').innerText;
+        
+        
+     
+        var oInput = document.createElement('input');
+       // var Url2 = Url2.replace("<font color='lime'>##@</font>",'');
+        Url2 = Url2.replace("#####",'');
+        
+        oInput.value = Url2;
+        document.body.appendChild(oInput);
+        oInput.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+        oInput.className = 'oInput';
+        oInput.style.display='none';
+        cp_reslut = document.getElementById("cp");
+        cp_reslut.style.animation="blinkingText 0.3s 20 forwards";
+        setTimeout(set_pause,1000,"cp");
+     //   setTimeout(set_color,100,"cp");
+        cp_reslut.textContent = "copy";
+        //cp_reslut.style.color="#000";
+        //element.style.//addcss(styles_2);
+        //console.log("复制成功");
+        
+    }
+    function set_pause(id){
+      //cp_reslut.textContent = "success";
+       document.getElementById(id).style.animation="none";
+        
+ //       document.getElementById(id).style.animationPlayState = 'paused';
+        
+      
+    }
+    function set_color(id){
+      //cp_reslut.textContent = "success";
+     //   document.getElementById(id).style.opacity = 0.5;
+        
+        //document.getElementById(id).style.animation="blinkingText_black 1s infinite";
+        //document.getElementById(id).style.anitmatation-direction="normal";
+        
+        document.getElementById(id).style.color = rgba(0,0,0,1) ; 
+        
+      
+    }
+    
+    
+
+
+
+
+
+
+  function cpy() {
+        var Url2=document.getElementById('doc').innerText;
+        
+        if(!(isChinese(Url2[0]))){
+        doc_reslut = document.getElementById("doc");
+        doc_reslut.style.animation="blinkingText 0.3s 20 forwards";
+      //  doc_reslut.style.animation-fill-mode="forwards";
+       setTimeout(set_pause,2000,"doc");
+        }else{
+     
+        var oInput = document.createElement('input');
+        Url2 = Url2.replace("#####",'');
+       
+        oInput.value = Url2;
+        document.body.appendChild(oInput);
+        oInput.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+        oInput.className = 'oInput';
+        oInput.style.display='none';
+   //     console.log("复制成功");
+           cp_reslut = document.getElementById("doc");
+        cp_reslut.style.animation="blinkingText_2 0.3s 20 forwards";
+        setTimeout(set_pause,1000,"doc");
+     //   setTimeout(set_color,100,"cp");
+      //  cp_reslut.textContent = "copy";
+   
+        }
+    }
+
+function check_doc_txt(){
+  
+ var  get_val = window.location.search.substr(1)
+ // console.log(get_val)
+  if (get_val == "use_cb=1"){
+  
+  var check_enter ="\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+	  var raw_value= document.getElementById("raw").value;
+ if (raw_value==check_enter || raw_value=='' ){
+  //console.log("enter ok")
+  get_clipboard();
+
+ }
+ 
+ setTimeout(check_doc_txt,2000);
+}
+ 
+}
+
+window.onload = check_doc_txt;
 
 
   </script>
@@ -115,3 +420,8 @@ var c = document.getElementById("raw").value
 
 
 
+
+
+ 
+  
+  
